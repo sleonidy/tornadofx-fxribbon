@@ -5,13 +5,11 @@ import com.pixelduke.control.ribbon.QuickAccessBar
 import com.pixelduke.control.ribbon.RibbonGroup
 import com.pixelduke.control.ribbon.RibbonItem
 import com.pixelduke.control.ribbon.RibbonTab
-import javafx.beans.property.ObjectProperty
 import javafx.beans.property.StringProperty
 import javafx.collections.ObservableList
 import javafx.event.EventTarget
 import javafx.scene.Node
 import javafx.scene.control.Button
-import tornadofx.builderTarget
 import tornadofx.opcr
 import kotlin.reflect.KFunction1
 
@@ -25,8 +23,8 @@ fun Ribbon.quickAccessBar(op: QuickAccessBar.() -> Unit = {}): QuickAccessBar {
 }
 
 @Suppress("UNCHECKED_CAST")
-var QuickAccessBar.quickAccessBuilderTarget: KFunction1<*, ObservableList<Button>>?
-    get() = properties["tornadofx.builderTarget"] as KFunction1<Any, ObservableList<Button>>?
+var QuickAccessBar.quickAccessBuilderTarget: KFunction1<QuickAccessBar, ObservableList<Button>>?
+    get() = properties["tornadofx.builderTarget"] as KFunction1<QuickAccessBar, ObservableList<Button>>?
     set(value) {
         properties["tornadofx.builderTarget"] = value
     }
@@ -43,26 +41,6 @@ internal fun QuickAccessBar.region(
 fun QuickAccessBar.buttons(op: QuickAccessBar.() -> Unit = {}) = region(QuickAccessBar::getButtons, op)
 
 fun QuickAccessBar.rightButtons(op: QuickAccessBar.() -> Unit = {}) = region(QuickAccessBar::getRightButtons, op)
-
-fun QuickAccessBar.quickAccessBarButton(text: String = "", graphic: Node? = null, op: Button.() -> Unit = {}): Button {
-    val button = Button(text).apply {
-        if (graphic != null) this.graphic = graphic
-    }
-    button.op()
-    return addButton(button)
-
-}
-
-fun QuickAccessBar.addButton(button: Button): Button {
-    val target = this.quickAccessBuilderTarget
-    if (target != null) {
-        // Trick to get around the disallowed use of invoke on out projected types
-        @Suppress("UNNECESSARY_NOT_NULL_ASSERTION")
-        target!!(this).add(button)
-
-    }
-    return button
-}
 
 fun Ribbon.ribbonTab(text: String, op: RibbonTab.() -> Unit = {}): RibbonTab {
     val tab = RibbonTab(text)
@@ -85,10 +63,9 @@ fun Ribbon.ribbonTab(text: StringProperty? = null, op: RibbonTab.() -> Unit = {}
 fun RibbonTab.ribbonGroup(title: String, op: RibbonGroup.() -> Unit = {}): RibbonGroup {
     val ribbonGroup = RibbonGroup().apply {
         this.title = title
-        op()
     }
-    ribbonGroups.add(ribbonGroup)
-    return ribbonGroup
+
+    return opcr(this, ribbonGroup, op)
 }
 
 fun RibbonTab.ribbonGroup(title: StringProperty? = null, op: RibbonGroup.() -> Unit = {}): RibbonGroup {
@@ -100,19 +77,13 @@ fun RibbonTab.ribbonGroup(title: StringProperty? = null, op: RibbonGroup.() -> U
     return ribbonGroup
 }
 
-fun <T : Node> RibbonGroup.addTo(node: T, op: T.() -> Unit = {}): T {
-    node.op()
-    nodes.add(node)
-    return node
-}
-
 fun RibbonGroup.ribbonItem(text: String, graphic: Node? = null, op: RibbonItem.() -> Unit = {}): RibbonItem {
     val ribbonItem = RibbonItem().apply {
         this.label = text
         if (graphic != null)
             this.graphic = graphic
     }
-    return addToRibbonItem(ribbonItem,op)
+    return opcr(this, ribbonItem, op)
 }
 
 fun RibbonGroup.ribbonItem(
@@ -126,19 +97,6 @@ fun RibbonGroup.ribbonItem(
         if (graphic != null)
             this.graphic = graphic
     }
-    return addToRibbonItem(ribbonItem, op)
-}
-
-@Suppress("UNCHECKED_CAST")
-private fun RibbonGroup.addToRibbonItem(
-    ribbonItem: RibbonItem,
-    op: RibbonItem.() -> Unit
-): RibbonItem {
-    ribbonItem.builderTarget = RibbonItem::itemProperty as KFunction1<*, ObjectProperty<Node>>?
-    ribbonItem.op()
-    ribbonItem.builderTarget = null
-    if (ribbonItem.item == null)
-        throw IllegalStateException("Ribbon Item cannot be without a child")
-    return addTo(ribbonItem)
+    return opcr(this, ribbonItem, op)
 }
 
