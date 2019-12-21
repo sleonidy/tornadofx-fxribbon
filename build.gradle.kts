@@ -36,20 +36,21 @@ tasks {
 publishing {
     publications{
         create<MavenPublication>("mavenPublication"){
-
+            from(components["java"])
+            groupId = project.group as String
+            artifactId = project.name
+            version = project.version as String
         }
 
     }
 }
 bintray{
-    user = System.getenv("BINTRAY_USER")
-    key = System.getenv("BINTRAY_PASSWORD")
+    user = if(project.hasProperty("bintrayUser")) project.property("bintrayUser") as String else System.getenv("BINTRAY_USER") as String
+    key = if(project.hasProperty("bintrayApiKey")) project.property("bintrayApiKey")  as String  else  System.getenv("BINTRAY_API_KEY") as String
     setPublications("mavenPublication")
-    publish = true
     pkg(delegateClosureOf<com.jfrog.bintray.gradle.BintrayExtension.PackageConfig> {
-        repo = "TornadoFX-FXRibbon"
-        name = "TornadoFX-FXRibbon"
-        userOrg = "sleonidy"
+        repo = "tornadofx-fxribbon"
+        name = "tornadofx-fxribbon"
         websiteUrl = "https://github.com/sleonidy/tornadofx-fxribbon"
         githubRepo = "sleonidy/tornadofx-fxribbon"
         vcsUrl = "https://github.com/sleonidy/tornadofx-fxribbon"
