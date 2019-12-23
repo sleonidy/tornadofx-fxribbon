@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "org.github.sleonidy"
-version = "0.1.0"
+version = "0.1.1"
 description = "Tornado FX(https://github.com/edvin/tornadofx) binding for FXRibbon(https://github.com/dukke/FXRibbon)"
 repositories {
     mavenCentral()
