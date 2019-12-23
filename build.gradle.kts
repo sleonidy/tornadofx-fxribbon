@@ -11,13 +11,19 @@ description = "Tornado FX(https://github.com/edvin/tornadofx) binding for FXRibb
 repositories {
     mavenCentral()
     jcenter()
+    maven("https://maven.pkg.github.com/sleonidy/FXRibbon"){
+        credentials {
+            username = "sleonidy"
+            password = project.property("GITHUB_KEY") as String
+        }
+    }
 }
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
     implementation("no.tornado:tornadofx:1.7.19")
-    implementation("com.pixelduke:fxribbon:1.2.1")
+    implementation("com.pixelduke:fxribbon:1.2.2")
     testImplementation("org.kordamp.ikonli:ikonli-javafx:2.4.0")
     testImplementation("org.kordamp.ikonli:ikonli-devicons-pack:2.4.0")
 }
