@@ -6,9 +6,7 @@ import com.pixelduke.control.ribbon.RibbonTab
 import javafx.beans.property.ListProperty
 import javafx.collections.FXCollections
 import javafx.scene.Node
-import tornadofx.View
-import tornadofx.getValue
-import tornadofx.listProperty
+import tornadofx.*
 
 abstract class FXRibbonView(title: String? = null, icon: Node? = null) : View(title, icon) {
     val ribbonTabsProperty: ListProperty<RibbonTab> = listProperty(FXCollections.observableArrayList<RibbonTab>())
