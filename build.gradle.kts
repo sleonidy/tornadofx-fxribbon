@@ -36,8 +36,8 @@ tasks {
         kotlinOptions.jvmTarget = "1.8"
     }
 }
-tasks {
-
+java{
+    sourceCompatibility = JavaVersion.VERSION_1_8
 }
 publishing {
     publications{
