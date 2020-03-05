@@ -22,7 +22,7 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
-    implementation("no.tornado:tornadofx:1.7.19")
+    implementation("no.tornado:tornadofx:1.7.20")
     implementation("com.pixelduke:fxribbon:1.2.2")
     testImplementation("org.kordamp.ikonli:ikonli-javafx:2.4.0")
     testImplementation("org.kordamp.ikonli:ikonli-devicons-pack:2.4.0")
