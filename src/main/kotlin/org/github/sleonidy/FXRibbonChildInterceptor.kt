@@ -24,7 +24,7 @@ class FXRibbonChildInterceptor : ChildInterceptor {
         }
     }
 
-    private fun Ribbon.add(node: Node, index: Int?): Boolean {
+    private fun Ribbon.add(node: EventTarget, index: Int?): Boolean {
         return when (node) {
             is RibbonTab -> if (index == null) tabs.add(node) else {
                 tabs.add(index, node); return true

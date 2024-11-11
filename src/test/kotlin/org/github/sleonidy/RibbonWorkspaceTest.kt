@@ -2,16 +2,11 @@ package org.github.sleonidy
 
 import tornadofx.*
 
-class RibbonWorkspaceTestApp : App(MyRibbonWorkspace::class){
-    init {
 
-    }
+class RibbonWorkspaceTestApp : App(MyRibbonWorkspace::class){
 }
 
 class MyRibbonWorkspace:FXRibbonWorkspace(){
-    init {
-
-    }
 
     override fun onDock() {
         super.onDock()

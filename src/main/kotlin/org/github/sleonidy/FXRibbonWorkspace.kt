@@ -47,16 +47,44 @@ open class FXRibbonWorkspace(title: String? = null, icon: Node? = null) : View(t
         }
     }
 
-    inline fun <reified T : UIComponent> dock() {
-        tabPane.tab<T>()
+    inline fun <reified T : UIComponent> dock(noinline op: Tab.() -> Unit = {}) {
+        tabPane
+            .tab<T>()
+            .also {
+                it.op()
+            }
     }
 
-    fun <T : UIComponent> dock(componentClass: KClass<T>) {
-        tabPane.tab(componentClass)
+    fun <T : UIComponent> dock(componentClass: KClass<T>, op: Tab.() -> Unit = {}) {
+        tabPane.tab(componentClass).also {
+            it.op()
+        }
     }
 
-    fun <T : UIComponent> dock(component: T) {
-        tabPane.tab(component)
+    fun <T : UIComponent> dock(component: T, op: Tab.() -> Unit = {}) {
+        (tabPane.tabs
+            .firstOrNull { it.content.properties[UI_COMPONENT_PROPERTY] as? T == component }
+            ?: tabPane.tab(component)).also {
+            it.op()
+        }
+    }
+
+    inline fun <reified T : UIComponent> dock(index: Int, noinline op: Tab.() -> Unit = {}) {
+        tabPane.tab<T>().also {
+            it.op()
+        }
+    }
+
+    fun <T : UIComponent> dock(index: Int, componentClass: KClass<T>, op: Tab.() -> Unit = {}) {
+        tabPane.tab(componentClass).also {
+            it.op()
+        }
+    }
+
+    fun <T : UIComponent> dock(index: Int, component: T, op: Tab.() -> Unit = {}) {
+        tabPane.tab(component).also {
+            it.op()
+        }
     }
 
     override fun onDock() {
