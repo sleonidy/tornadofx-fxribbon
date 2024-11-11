@@ -1,11 +1,9 @@
 package org.github.sleonidy
 
-import javafx.geometry.Pos
 import javafx.scene.control.TabPane
 import org.kordamp.ikonli.devicons.Devicons
 import org.kordamp.ikonli.javafx.FontIcon
 import tornadofx.*
-
 
 internal class RibbonTestApp : App(RibbonView::class)
 
